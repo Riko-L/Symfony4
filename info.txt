@@ -1,0 +1,1 @@
+DATABASE_URL=mysql://eric:*BadBeat74940*&&@192.168.0.45:3306/db_symfony

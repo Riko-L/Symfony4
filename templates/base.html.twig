@@ -13,12 +13,17 @@
                 <h5 class="my-0 mr-md-auto font-weight-normal">Annonce & Co</h5>
                 <nav class="my-2 my-md-0 mr-md-3">
                     <a class="p-2 text-dark" href="#">Déposer une annonce</a>
-                    <a class="p-2 text-dark" href="#">Mon compte</a>
+                    {% if is_granted("ROLE_USER") %}
+                    <a class="p-2 text-dark" href="#">Mon compte <span>( {{ app.user.username }} )</span></a>
+                    {% endif %}
                     <a class="p-2 text-dark" href="#">Support</a>
                     <a class="p-2 text-dark" href="#">Contact</a>
                 </nav>
-                <a class="btn btn-outline-primary" href="#">Connection</a>
-                <a class="btn btn-outline-primary" href="#">Inscription</a>
+                <a class="btn btn-outline-primary" href="{{ path('login') }}">Connection</a>
+                <a class="btn btn-outline-primary" href="{{ path('register') }}">Inscription</a>
+                {% if is_granted("ROLE_USER") %}
+                <a class="btn btn-outline-danger" href="{{ path('logout') }}">Déconnection</a>
+                {% endif %}
             </div>
         {% endblock %}
 
