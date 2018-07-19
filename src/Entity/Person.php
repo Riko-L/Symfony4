@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -22,34 +24,34 @@ class Person implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=191, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email(groups={"update"})
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255 , unique=true)
+     * @ORM\Column(type="string", length=191 , unique=true)
      * @Assert\NotBlank(groups={"update"})
      */
     private $username;
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
      * @Assert\NotBlank(groups={"update"})
      */
     private $firstName;
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
      * @Assert\NotBlank(groups={"update"})
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
      * @Assert\NotBlank(groups={"update"})
      */
     private $phoneNumber;
@@ -79,11 +81,17 @@ class Person implements UserInterface
      */
     private $isDelete;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Ads", mappedBy="author", orphanRemoval=true)
+     */
+    private $ads;
+
 
     public function __construct()
     {
         $this->roles = array('ROLE_USER');
         $this->isDelete = false;
+        $this->ads = new ArrayCollection();
     }
 
 
@@ -218,6 +226,37 @@ class Person implements UserInterface
     public function setIsDelete($isDelete): void
     {
         $this->isDelete = $isDelete;
+    }
+
+    /**
+     * @return Collection|Ads[]
+     */
+    public function getAds(): Collection
+    {
+        return $this->ads;
+    }
+
+    public function addAd(Ads $ad): self
+    {
+        if (!$this->ads->contains($ad)) {
+            $this->ads[] = $ad;
+            $ad->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAd(Ads $ad): self
+    {
+        if ($this->ads->contains($ad)) {
+            $this->ads->removeElement($ad);
+            // set the owning side to null (unless already changed)
+            if ($ad->getAuthor() === $this) {
+                $ad->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 
 
