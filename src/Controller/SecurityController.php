@@ -12,6 +12,8 @@ namespace App\Controller;
 use App\Entity\Person;
 use App\Form\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -47,7 +49,13 @@ class SecurityController extends Controller
     {
         // 1) build the form
         $user = new Person();
-        $form = $this->createForm(PersonType::class, $user);
+        $form = $this->createForm(PersonType::class, $user)
+            ->add('plainPassword', RepeatedType::class, array(
+            'type' => PasswordType::class,
+            'first_options'  => array('label' => 'Password'),
+            'second_options' => array('label' => 'Repeat Password'),
+        ))
+        ;;
 
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
@@ -64,6 +72,7 @@ class SecurityController extends Controller
 
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
+
 
             return $this->redirectToRoute('welcome');
         }

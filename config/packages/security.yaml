@@ -4,9 +4,8 @@ security:
         in_memory: { memory: ~ }
 
         our_db_provider:
-                        entity:
-                            class: App\Entity\Person
-                            property: email
+            entity:
+                class: App\Entity\Person
 
     encoders:
             App\Entity\Person: bcrypt
@@ -17,6 +16,8 @@ security:
             security: false
         main:
             anonymous: ~
+            pattern: ^/
+            user_checker: App\Security\PersonChecker
 
             # activate different ways to authenticate
 
@@ -39,4 +40,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/account, roles: ROLE_USER }

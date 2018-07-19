@@ -17,23 +17,23 @@ class PersonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName',TextType::class)
+            ->add('firstName',TextType::class )
             ->add('lastName',TextType::class)
             ->add('phoneNumber',TelType::class)
             ->add('username',TextType::class)
             ->add('email',EmailType::class)
-            ->add('plainPassword', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-            ))
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Person::class,
+            'validation_groups' => array('update'),
         ]);
     }
+
+
+
 }

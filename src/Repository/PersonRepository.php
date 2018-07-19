@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Person|null find($id, $lockMode = null, $lockVersion = null)
@@ -12,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Person[]    findAll()
  * @method Person[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PersonRepository extends ServiceEntityRepository
+class PersonRepository extends ServiceEntityRepository implements UserLoaderInterface
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -47,4 +49,22 @@ class PersonRepository extends ServiceEntityRepository
         ;
     }
     */
+    /**
+     * Loads the user for the given username.
+     *
+     * This method must return null if the user is not found.
+     *
+     * @param string $username The username
+     *
+     * @return UserInterface|null
+     */
+    public function loadUserByUsername($username)
+    {
+        return $this->createQueryBuilder('u')
+        ->where('u.email = :email OR u.phoneNumber = :phoneNumber')
+        ->setParameter('email', $username)
+        ->setParameter('phoneNumber', $username)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 }

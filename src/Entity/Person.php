@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  * @UniqueEntity(fields="email", message="Email already taken")
  * @UniqueEntity(fields="username", message="Username already taken")
  */
@@ -24,33 +24,33 @@ class Person implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
-     * @Assert\Email()
+     * @Assert\Email(groups={"update"})
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255 , unique=true)
+     * @Assert\NotBlank(groups={"update"})
      */
     private $username;
 
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"update"})
      */
     private $firstName;
 
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"update"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"update"})
      */
     private $phoneNumber;
 
@@ -73,12 +73,30 @@ class Person implements UserInterface
      */
     private $roles;
 
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDelete;
+
+
     public function __construct()
     {
         $this->roles = array('ROLE_USER');
+        $this->isDelete = false;
     }
 
-    // other properties and methods
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
 
     public function getEmail()
     {
@@ -185,4 +203,22 @@ class Person implements UserInterface
     public function eraseCredentials()
     {
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsDelete()
+    {
+        return $this->isDelete;
+    }
+
+    /**
+     * @param mixed $isDelete
+     */
+    public function setIsDelete($isDelete): void
+    {
+        $this->isDelete = $isDelete;
+    }
+
+
 }
