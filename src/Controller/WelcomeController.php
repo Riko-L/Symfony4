@@ -14,9 +14,10 @@ class WelcomeController extends Controller
     public function index()
     {
         $person = $this->getUser();
+
         return $this->render('welcome/index.html.twig', [
             'controller_name' => 'WelcomeController',
-            'person' => $person
+            'person' => $person,
 
         ]);
     }

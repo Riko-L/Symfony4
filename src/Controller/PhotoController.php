@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Ads;
-use App\Form\AdsType;
-use App\Repository\AdsRepository;
+use App\Entity\Photo;
+use App\Form\PhotoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,50 +16,50 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * Class AccountController
  * @package App\Controller
- * @Route("/ads")
+ * @Route("/photo")
  * @IsGranted("ROLE_USER")
  */
-class AdsController extends Controller
+class PhotoController extends Controller
 {
     /**
-     * @Route("", name="ads")
+     * @Route("", name="photo")
      */
-    public function index(AdsRepository $adsRepository)
+    public function index()
     {
-        $person = $this->getUser();
-        return $this->render('ads/index.html.twig', [
-            'ads' => $adsRepository->findAll(),
-            'person' => $person
+        return $this->render('photo/index.html.twig', [
+            'controller_name' => 'PhotoController',
         ]);
     }
 
 
     /**
-     * @Route("/new", name="ads_new", methods="GET|POST")
+     * @Route("/new/{ads}", name="photo_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Ads $ads): Response
     {
-        $ads = new Ads();
+        $photo = new Photo();
 
         $person = $this->getUser();
-        $ads->setAuthor($person);
 
-        $form = $this->createForm(AdsType::class, $ads);
+
+        $photo->setAds($ads);
+
+        $form = $this->createForm(PhotoType::class, $photo);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($ads);
+            $em->persist($photo);
             $em->flush();
 
-            return $this->redirectToRoute('account_show');
+            return $this->redirectToRoute('ads_new');
         }
 
         return $this->render('ads/new.html.twig', [
             'ads' => $ads,
+            'photo' => $photo,
             'person' => $person,
             'form' => $form->createView(),
         ]);
     }
-
 }

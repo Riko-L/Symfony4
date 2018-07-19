@@ -29,7 +29,7 @@ class Photo
     /**
      * @ORM\Column(type="text")
      */
-    private $path;
+    private $file;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ads", inversedBy="photos")
@@ -66,14 +66,14 @@ class Photo
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getFile(): ?string
     {
-        return $this->path;
+        return $this->file;
     }
 
-    public function setPath(string $path): self
+    public function setFile(string $file): self
     {
-        $this->path = $path;
+        $this->file = $file;
 
         return $this;
     }

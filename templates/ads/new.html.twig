@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Déposer une annonce{% endblock %}
+
+{% block body %}
+    <h1>Déposer une annonce</h1>
+
+   {# <a href="{{ path('photo_new' ,{'ads': ads.id} ) }}" class="btn btn-primary">Ajouter des photo</a>#}
+
+    {{ include('ads/_form.html.twig') }}
+
+    <a href="{{ path('account_show') }}">retour à mon compte</a>
+{% endblock %}
