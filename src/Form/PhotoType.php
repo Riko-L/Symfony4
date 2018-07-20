@@ -16,8 +16,10 @@ class PhotoType extends AbstractType
         $builder
             ->add('name',TextType::class)
             ->add('description',TextType::class)
-            ->add('file',FileType::class, array('label' => 'Images (JPEG file)'))
-            ->add('ads')
+            ->add('file',FileType::class, array(
+                'label' => 'Images (JPEG file)',
+            ))
+            //->add('ads',AdsType::class , array('label' => 'Votre annonce'))
         ;
     }
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhotoRepository")
@@ -28,6 +29,8 @@ class Photo
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Ajouter une images jpg")
+     * @Assert\File(mimeTypes={ "image/*" })
      */
     private $file;
 
@@ -66,12 +69,12 @@ class Photo
         return $this;
     }
 
-    public function getFile(): ?string
+    public function getFile()
     {
         return $this->file;
     }
 
-    public function setFile(string $file): self
+    public function setFile($file): self
     {
         $this->file = $file;
 

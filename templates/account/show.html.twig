@@ -5,61 +5,96 @@
 {% block body %}
 
 
-    <div class="container">
 
 
-        <div class="panel panel-info">
 
-            <div class="panel-body">
-                <div class="row">
 
-                    <div class=" col-sm-6 offset-sm-3">
+    <div class="row">
 
-                        <h1>Bonjour {{ person.firstName }} {{ person.lastName }} </h1>
+        <div class=" col-sm-4 offset-sm-1">
 
-                        <h3> Voici les informations de votre compte</h3>
-                        <table class="table table-user-information">
-                            <thead>
+            <h1>Bonjour {{ person.firstName }} {{ person.lastName }} </h1>
 
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Prénom:</td>
-                                <td>{{ person.firstName }}</td>
-                            </tr>
-                            <tr>
-                                <td>Nom:</td>
-                                <td>{{ person.lastName }}</td>
-                            </tr>
-                            <tr>
-                                <td>Nom d'utilisateur</td>
-                                <td>{{ person.username }}</td>
-                            </tr>
+            <h3> Voici les informations de votre compte</h3>
+            <table class="table table-user-information">
+                <thead>
 
-                            <tr>
-                                <td>Téléphone</td>
-                                <td>{{ person.phoneNumber}}</td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td>{{ person.email }}</td>
-                            </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Prénom:</td>
+                    <td>{{ person.firstName }}</td>
+                </tr>
+                <tr>
+                    <td>Nom:</td>
+                    <td>{{ person.lastName }}</td>
+                </tr>
+                <tr>
+                    <td>Nom d'utilisateur</td>
+                    <td>{{ person.username }}</td>
+                </tr>
 
-                            </tbody>
-                        </table>
+                <tr>
+                    <td>Téléphone</td>
+                    <td>{{ person.phoneNumber}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ person.email }}</td>
+                </tr>
 
-                        <div class="d-flex justify-content-between">
+                </tbody>
+            </table>
 
-                            <a href="{{ path('account_edit') }}" class="btn btn-primary">Mettre à jour mes inforamtions</a>
+            <div class="d-flex justify-content-between">
 
-                            {{ include('account/_delete_form.html.twig') }}
+                <a href="{{ path('account_edit') }}" class="btn btn-primary">Mettre à jour mes inforamtions</a>
 
-                        </div>
-                    </div>
-                </div>
+                {{ include('account/_delete_form.html.twig') }}
+
             </div>
         </div>
+
+
+        <div class="col-sm-5 offset-sm-1">
+
+            <h1>Mes annonces</h1>
+
+            <h2>Voici les annonces que vous avez déposé</h2>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>Image</td>
+                    <td>Titre</td>
+                    <td>Date</td>
+                    <td>Région</td>
+                    <td>Catégorie</td>
+                    <td>Editer</td>
+                    <td>Suprimer</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ad in ads %}
+                    <tr>
+
+                        <td><img class="img-fluid img-thumbnail" width="100"  src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
+                        <td>{{ ad.title }}</td>
+                        <td>{{ ad.creationDate|date }}</td>
+                        <td>{{ ad.region }}</td>
+                        <td>{{ ad.category }}</td>
+                        <td><a href="{{ path('ads_edit', {'ads' : ad.id }) }}" class="btn btn-warning">Editer</a></td>
+                        <td>{{ include('ads/_delete_form.html.twig' , {'ads' : ad }) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+
+        </div>
     </div>
+
 
 
 {% endblock %}

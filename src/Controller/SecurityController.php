@@ -11,6 +11,8 @@ namespace App\Controller;
 
 use App\Entity\Person;
 use App\Form\PersonType;
+use App\Service\SendMail;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -26,7 +28,8 @@ class SecurityController extends Controller
     /**
      * @Route("/login", name="login")
      */
-    public function login (Request $request , AuthenticationUtils $authenticationUtils) {
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    {
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -36,7 +39,7 @@ class SecurityController extends Controller
 
         return $this->render('security/login.html.twig', array(
             'last_username' => $lastUsername,
-            'error'         => $error,
+            'error' => $error,
         ));
 
     }
@@ -45,17 +48,16 @@ class SecurityController extends Controller
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, SendMail $sendMail, EntityManagerInterface $entityManager)
     {
         // 1) build the form
         $user = new Person();
         $form = $this->createForm(PersonType::class, $user)
             ->add('plainPassword', RepeatedType::class, array(
-            'type' => PasswordType::class,
-            'first_options'  => array('label' => 'Password'),
-            'second_options' => array('label' => 'Repeat Password'),
-        ))
-        ;;
+                'type' => PasswordType::class,
+                'first_options' => array('label' => 'Password'),
+                'second_options' => array('label' => 'Repeat Password'),
+            ));;
 
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
@@ -66,9 +68,11 @@ class SecurityController extends Controller
             $user->setPassword($password);
 
             // 4) save the User!
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+
+            $sendMail->registerConfirm($user);
 
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user

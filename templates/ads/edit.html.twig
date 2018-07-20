@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon annonce{% endblock %}
+
+{% block body %}
+    <div class="col-sm-4 offset-sm-4">
+        <h1>Modifier mon annonce</h1>
+
+
+        {{ include('ads/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+        {% if ads.getPhotos() %}
+            <a href="{{ path('photo_new' , {'ads' : ads.id}) }}" class="btn btn-primary">Ajouter Photos</a>
+        {% endif %}
+
+    </div>
+
+        <div class="text-center">
+
+            <a  href="{{ path('account_show') }}">Retourner à mon compte</a>
+
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -9,6 +9,7 @@
 namespace App\Controller;
 use App\Entity\Person;
 use App\Form\PersonType;
+use App\Repository\AdsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,15 @@ class AccountController extends Controller
      */
     public function show(): Response
     {
-        return $this->render('account/show.html.twig', ['person' => $this->getUser()]);
+        $person = $this->getUser();
+
+        $ads = $person->getAds();
+
+
+
+
+
+        return $this->render('account/show.html.twig', ['person' => $person , 'ads' => $ads ]);
     }
 
 

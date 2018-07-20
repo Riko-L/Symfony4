@@ -25,7 +25,7 @@
             <tbody>
             {% for ad in ads %}
                 <tr>
-                    <td>image</td>
+                    <td><img class="img-fluid img-thumbnail" width="200" src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
                     <td>{{ ad.title }}</td>
                     <td>{{ ad.creationDate|date }}</td>
                     <td>{{ ad.author.firstName }} {{ ad.author.lastName }}</td>

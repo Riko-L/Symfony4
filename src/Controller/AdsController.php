@@ -62,4 +62,45 @@ class AdsController extends Controller
         ]);
     }
 
+
+    /**
+     * @Route("/{ads}", name="ads_delete", methods="DELETE")
+     */
+    public function delete(Request $request, Ads $ads): Response
+    {
+
+        if ($this->isCsrfTokenValid('delete'.$ads->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($ads);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('account_show');
+    }
+
+
+    /**
+     * @Route("/{ads}/edit", name="ads_edit", methods="GET|POST")
+     */
+    public function edit(Request $request, Ads $ads): Response
+    {
+        $person = $this->getUser();
+
+
+        $form = $this->createForm(AdsType::class, $ads);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('account_show', ['ads' => $ads->getId()]);
+        }
+
+        return $this->render('ads/edit.html.twig', [
+            'ads' => $ads,
+            'person' => $person,
+            'form' => $form->createView(),
+        ]);
+    }
+
 }
