@@ -6,21 +6,43 @@
     <div class="col-sm-4 offset-sm-4">
         <h1>Modifier mon annonce</h1>
 
-
         {{ include('ads/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-        {% if ads.getPhotos() %}
-            <a href="{{ path('photo_new' , {'ads' : ads.id}) }}" class="btn btn-primary">Ajouter Photos</a>
+        {% if photos | length < 3 %}
+            <div>
+                <a href="{{ path('photo_new' , {'ads' : ads.id}) }}" class="btn btn-primary">Ajouter Photos</a>
+            </div>
         {% endif %}
+
+        <hr>
+
+        <div class="row">
+
+            {% for photo in photos %}
+                <div class="col">
+                    <div class="text-center">
+                        <h5>{{ photo.name }}</h5>
+                        <img class="img-fluid img-thumbnail" width="300" src="{{ path('photo_show_all' , { 'photo' : photo.id })}}" alt="img_annonce">
+                        <p>{{ photo.description }}</p>
+                    </div>
+                    {% if photos | length > 1 %}
+                        <div class="text-center">
+                            {{ include('photo/_delete_form.html.twig') }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
 
     </div>
 
-        <div class="text-center">
 
-            <a  href="{{ path('account_show') }}">Retourner à mon compte</a>
+    <div class="text-center">
+
+        <a  href="{{ path('account_show') }}">Retourner à mon compte</a>
 
 
-        </div>
+    </div>
     </div>
 
 {% endblock %}

@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * Class AccountController
  * @package App\Controller
  * @Route("/ads")
- * @IsGranted("ROLE_USER")
+ *
  */
 class AdsController extends Controller
 {
@@ -27,15 +27,29 @@ class AdsController extends Controller
     public function index(AdsRepository $adsRepository)
     {
         $person = $this->getUser();
+        $ads = $adsRepository->findAll();
+
         return $this->render('ads/index.html.twig', [
-            'ads' => $adsRepository->findAll(),
+            'ads' => $ads,
             'person' => $person
         ]);
     }
 
+    /**
+     *@Route("show/{ad}", name="ads_show")
+     */
+    public function show(Ads $ad) {
+        $person = $this->getUser();
+
+        $photos = $ad->getPhotos();
+
+        return $this->render('ads/show.html.twig' , ['ad'=> $ad , 'person' => $person , 'photos' => $photos]);
+    }
 
     /**
      * @Route("/new", name="ads_new", methods="GET|POST")
+     * @IsGranted("ROLE_USER")
+     *
      */
     public function new(Request $request): Response
     {
@@ -65,6 +79,7 @@ class AdsController extends Controller
 
     /**
      * @Route("/{ads}", name="ads_delete", methods="DELETE")
+     * @IsGranted("ROLE_USER")
      */
     public function delete(Request $request, Ads $ads): Response
     {
@@ -81,11 +96,13 @@ class AdsController extends Controller
 
     /**
      * @Route("/{ads}/edit", name="ads_edit", methods="GET|POST")
+     * @IsGranted("ROLE_USER")
      */
     public function edit(Request $request, Ads $ads): Response
     {
         $person = $this->getUser();
 
+        $photos = $ads->getPhotos();
 
         $form = $this->createForm(AdsType::class, $ads);
         $form->handleRequest($request);
@@ -98,6 +115,7 @@ class AdsController extends Controller
 
         return $this->render('ads/edit.html.twig', [
             'ads' => $ads,
+            'photos' => $photos,
             'person' => $person,
             'form' => $form->createView(),
         ]);

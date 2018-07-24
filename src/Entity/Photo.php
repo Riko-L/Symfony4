@@ -28,8 +28,8 @@ class Photo
     private $description;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Ajouter une images jpg")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Ajouter une images")
      * @Assert\File(mimeTypes={ "image/*" })
      */
     private $file;
@@ -39,6 +39,7 @@ class Photo
      * @ORM\JoinColumn(nullable=false)
      */
     private $ads;
+
 
     public function getId()
     {
@@ -92,4 +93,7 @@ class Photo
 
         return $this;
     }
+
+
+
 }

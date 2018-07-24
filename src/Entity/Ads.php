@@ -24,7 +24,7 @@ class Ads
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=65536)
      */
     private $description;
 
@@ -50,9 +50,12 @@ class Ads
     private $region;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="category")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+
 
     public function __construct()
     {
@@ -155,15 +158,17 @@ class Ads
         return $this;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(string $category): self
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
         return $this;
     }
+
+
 }

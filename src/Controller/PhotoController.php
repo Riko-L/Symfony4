@@ -6,6 +6,7 @@ use App\Entity\Ads;
 use App\Entity\Photo;
 use App\Form\PhotoType;
 use App\Repository\PhotoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * Class AccountController
  * @package App\Controller
  * @Route("/photo")
- * @IsGranted("ROLE_USER")
+ *
  */
 class PhotoController extends Controller
 {
@@ -38,8 +39,9 @@ class PhotoController extends Controller
 
     /**
      * @Route("/{ads}/new/", name="photo_new", methods="GET|POST")
+     * @IsGranted("ROLE_USER")
      */
-    public function new(Request $request, Ads $ads): Response
+    public function new(Request $request, Ads $ads , EntityManagerInterface $entityManager): Response
     {
 
 
@@ -50,31 +52,28 @@ class PhotoController extends Controller
         $photo->setAds($ads);
 
         $form = $this->createForm(PhotoType::class, $photo);
+
         $form->handleRequest($request);
-
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $file = $photo->getFile();
 
 
-            /** @var UploadedFile $attachments */
-            $attachments = $photo->getFile();
 
-            $fileName = $this->generateUniqueFileName().'.'.$attachments->guessExtension();
+            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
 
-            $attachments->move(
+            $file->move(
                 $this->getParameter('upload_photo'),
                 $fileName
             );
-
             $photo->setFile($fileName);
 
 
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($photo);
-            $em->flush();
+
+            $entityManager->persist($photo);
+            $entityManager->flush();
 
             return $this->redirectToRoute('account_show');
         }
@@ -110,5 +109,35 @@ class PhotoController extends Controller
         return new BinaryFileResponse(
             $this->getParameter("upload_photo").$photo[0]->getFile()
         );
+    }
+
+    /**
+     * @Route("/showall/{photo}", name="photo_show_all")
+     * @param Photo $photo
+     * @return BinaryFileResponse
+     */
+    public function showAll(Photo $photo){
+
+        return new BinaryFileResponse(
+            $this->getParameter("upload_photo").$photo->getFile()
+        );
+    }
+
+
+    /**
+     * @Route("/{photo}" , name="photo_delete" ,methods="DELETE")
+     */
+    public function delette(Request $request ,EntityManagerInterface $entityManager ,Photo $photo)
+    {
+
+        if ($this->isCsrfTokenValid('delete' . $photo->getId(), $request->request->get('_token'))) {
+
+
+          $entityManager->remove($photo);
+
+            $entityManager->flush();
+            return $this->redirectToRoute('account_show');
+
+        }
     }
 }

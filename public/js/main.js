@@ -27,5 +27,13 @@ $(function () {
     });
 
 
+    $(".clickable-row").on('click',function() {
+        window.location = $(this).data("href");
+    });
+
+    $(".clickable-data").on('click',function() {
+        window.location = $(this).data("href");
+    });
+
 
 });

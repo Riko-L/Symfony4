@@ -78,11 +78,11 @@
                 {% for ad in ads %}
                     <tr>
 
-                        <td><img class="img-fluid img-thumbnail" width="100"  src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
+                        <td class='clickable-data' data-href="{{ path('ads_show' , { 'ad' : ad.id}) }}"><img class="img-fluid img-thumbnail" width="100"  src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
                         <td>{{ ad.title }}</td>
                         <td>{{ ad.creationDate|date }}</td>
                         <td>{{ ad.region }}</td>
-                        <td>{{ ad.category }}</td>
+                        <td>{{ ad.category.name }}</td>
                         <td><a href="{{ path('ads_edit', {'ads' : ad.id }) }}" class="btn btn-warning">Editer</a></td>
                         <td>{{ include('ads/_delete_form.html.twig' , {'ads' : ad }) }}</td>
                     </tr>

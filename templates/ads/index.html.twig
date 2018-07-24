@@ -14,25 +14,24 @@
         <table class="table">
             <thead>
             <tr>
-            <td>Image</td>
-            <td>Titre</td>
-            <td>Date</td>
-            <td>Auteur</td>
-            <td>Région</td>
-            <td>Catégorie</td>
+                <td>Image</td>
+                <td>Titre</td>
+                <td>Date</td>
+                <td>Auteur</td>
+                <td>Région</td>
+                <td>Catégorie</td>
             </tr>
             </thead>
             <tbody>
             {% for ad in ads %}
-                <tr>
-                    <td><img class="img-fluid img-thumbnail" width="200" src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
-                    <td>{{ ad.title }}</td>
-                    <td>{{ ad.creationDate|date }}</td>
-                    <td>{{ ad.author.firstName }} {{ ad.author.lastName }}</td>
-                    <td>{{ ad.region }}</td>
-                    <td>{{ ad.category }}</td>
-
-                </tr>
+                <tr class='clickable-row' data-href="{{ path('ads_show' , { 'ad' : ad.id}) }}">
+                        <td><img class="img-fluid img-thumbnail" width="200" src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
+                        <td>{{ ad.title }}</td>
+                        <td>{{ ad.creationDate|date }}</td>
+                        <td>{{ ad.author.firstName }} {{ ad.author.lastName }}</td>
+                        <td>{{ ad.region }}</td>
+                        <td>{{ ad.category.name}}</td>
+                    </tr>
             {% endfor %}
             </tbody>
 

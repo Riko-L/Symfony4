@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonce {{  ad.title }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+
+    <div class=" col-sm-4 offset-sm-4">
+
+        <h1>Annonce : {{ ad.title }}</h1>
+
+
+        <table class="table">
+            <thead>
+
+            </thead>
+            <tbody>
+            <tr>
+                <td class="font-weight-bold">Catégorie :  <span class="font-weight-normal">{{ ad.category.name }}</span></td>
+
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Région : <span class="font-weight-normal">{{ ad.region }}</span></td>
+
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Coordonnées du vendeur</td>
+            </tr>
+            {% if is_granted('ROLE_USER') %}
+                <tr>
+                    <td colspan="2" class="text-left">- Prénom : {{  ad.author.FirstName }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-left">- Nom : {{  ad.author.lastName }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-left">- Email : {{  ad.author.email }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-left">- Téléphone : {{  ad.author.phoneNumber }}</td>
+                </tr>
+            {% else %}
+                <tr><td class ="text-warning">Vous devez être enregitré pour voir les informations</td></tr>
+            {% endif %}
+            <tr>
+                <td class="font-weight-bold">Description</td>
+
+            </tr>
+            <tr>
+                <td colspan="2" class="text-left">{{ ad.description}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center font-weight-bold ">Photos</td>
+            </tr>
+            <tr>
+                <td>
+                    {% for photo in photos %}
+                        <img class="img-fluid img-thumbnail" width="300" src="{{ path('photo_show_all' , { 'photo' : photo.id })}}" alt="img_annonce">
+
+                    {% endfor %}
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between">
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ path('account_show') }}" class="btn btn-primary">Retour a mon compte</a>
+            {% endif %}
+            <a href="{{ path('ads') }}" class="btn btn-primary">Retour à la liste d'annonces</a>
+
+        </div>
+    </div>
+
+
+{% endblock %}
