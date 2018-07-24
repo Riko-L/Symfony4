@@ -44,10 +44,7 @@ class Ads
      */
     private $photos;
 
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $region;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="category")
@@ -55,11 +52,22 @@ class Ads
      */
     private $category;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="ads")
+     */
+    private $region;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
+
 
 
     public function __construct()
     {
         $this->photos = new ArrayCollection();
+        $this->isActive =true;
     }
 
     public function getId()
@@ -146,17 +154,6 @@ class Ads
         return $this;
     }
 
-    public function getRegion(): ?string
-    {
-        return $this->region;
-    }
-
-    public function setRegion(string $region): self
-    {
-        $this->region = $region;
-
-        return $this;
-    }
 
     public function getCategory(): ?Category
     {
@@ -166,6 +163,30 @@ class Ads
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

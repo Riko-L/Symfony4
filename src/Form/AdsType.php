@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Ads;
 use App\Entity\Category;
 use App\Entity\Photo;
+use App\Entity\Region;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Select;
 use phpDocumentor\Reflection\Type;
@@ -26,15 +27,6 @@ class AdsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $response = json_decode(file_get_contents('https://geo.api.gouv.fr/regions?fields=nom'),true);
-
-        $mySelect = array_map( function ($element) {
-
-            return $element['nom'];
-
-        } , $response );
-
-
 
         $builder
             ->add('title' ,TextType::class)
@@ -42,14 +34,10 @@ class AdsType extends AbstractType
             ->add('creationDate',DateType::class,[
                 "widget" => "single_text"
             ])
-            ->add('region',ChoiceType::class , [
-                'choices' => $mySelect,
-                'choice_label' => function ($choiceValue, $key, $value) {
-                    if ($value == $choiceValue) {
-                        return $value ;
-                    }
-                    return strtoupper($key);
-                }])
+            ->add('region',EntityType::class , [
+                'class'=> Region::class,
+                'choice_label' => 'name',
+            ])
             ->add('category',EntityType::class , [
                 'class'=> Category::class,
                 'choice_label' => 'name',

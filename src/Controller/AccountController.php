@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class AccountController
  * @package App\Controller
  * @Route("/account")
- * @IsGranted("ROLE_USER")
+ *
  */
 class AccountController extends Controller
 {

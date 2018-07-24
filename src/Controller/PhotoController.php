@@ -40,7 +40,7 @@ class PhotoController extends Controller
 
     /**
      * @Route("/{ads}/new/", name="photo_new", methods="GET|POST")
-     * @IsGranted("ROLE_USER")
+     *
      */
     public function new(Request $request, Ads $ads , EntityManagerInterface $entityManager): Response
     {

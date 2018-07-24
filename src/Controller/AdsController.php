@@ -29,14 +29,21 @@ class AdsController extends Controller
         $person = $this->getUser();
         $ads = $adsRepository->findAll();
 
+        $inactiveAds = array_filter(
+            array_map(function(Ads $ad) {
+                return !$ad->getIsActive();
+            }, $ads)
+        );
+
         return $this->render('ads/index.html.twig', [
             'ads' => $ads,
-            'person' => $person
+            'person' => $person,
+            'inactiveAds' => $inactiveAds
         ]);
     }
 
     /**
-     *@Route("show/{ad}", name="ads_show")
+     *@Route("/show/{ad}", name="ads_show")
      */
     public function show(Ads $ad) {
         $person = $this->getUser();
@@ -48,7 +55,7 @@ class AdsController extends Controller
 
     /**
      * @Route("/new", name="ads_new", methods="GET|POST")
-     * @IsGranted("ROLE_USER")
+     *
      *
      */
     public function new(Request $request): Response
@@ -79,7 +86,7 @@ class AdsController extends Controller
 
     /**
      * @Route("/{ads}", name="ads_delete", methods="DELETE")
-     * @IsGranted("ROLE_USER")
+     *
      */
     public function delete(Request $request, Ads $ads): Response
     {
@@ -96,7 +103,7 @@ class AdsController extends Controller
 
     /**
      * @Route("/{ads}/edit", name="ads_edit", methods="GET|POST")
-     * @IsGranted("ROLE_USER")
+     *
      */
     public function edit(Request $request, Ads $ads): Response
     {
@@ -119,6 +126,21 @@ class AdsController extends Controller
             'person' => $person,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Ads $ad
+     * @Route("/{ad}/moderate" , name="ads_moderate")
+     */
+    public function moderate(Ads $ad) {
+
+
+        $ad->setIsActive(!$ad->getIsActive());
+        $this->getDoctrine()->getManager()->flush();
+
+
+        return $this->redirectToRoute('ads');
     }
 
 }

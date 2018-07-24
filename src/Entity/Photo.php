@@ -13,7 +13,7 @@ class Photo
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="text")
      */
     private $id;
 
