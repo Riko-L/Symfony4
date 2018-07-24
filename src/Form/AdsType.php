@@ -54,8 +54,7 @@ class AdsType extends AbstractType
                 'class'=> Category::class,
                 'choice_label' => 'name',
             ])
-
-        ;
+ ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

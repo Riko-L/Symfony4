@@ -8,6 +8,7 @@ use App\Form\PhotoType;
 use App\Repository\PhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,11 +130,20 @@ class PhotoController extends Controller
      */
     public function delette(Request $request ,EntityManagerInterface $entityManager ,Photo $photo)
     {
+        $fileSystem = new Filesystem();
 
         if ($this->isCsrfTokenValid('delete' . $photo->getId(), $request->request->get('_token'))) {
 
+            $file = $photo->getFile();
+            $path = $this->getParameter('upload_photo');
+
+            if($fileSystem->exists($path.$file)) {
+
+                $fileSystem->remove($path.$file);
+            }
 
           $entityManager->remove($photo);
+
 
             $entityManager->flush();
             return $this->redirectToRoute('account_show');
