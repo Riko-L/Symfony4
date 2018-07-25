@@ -22,19 +22,53 @@ class AdsRepository extends ServiceEntityRepository
 //    /**
 //     * @return Ads[] Returns an array of Ads objects
 //     */
-    /*
-    public function findByExampleField($value)
+
+    public function findByCategoryRegionAndKeywrod($value)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        if($value['search'] == ""){
+
+            $value['search'] = null;
+        }
+        if($value['category'] == ""){
+
+            $value['category'] = null;
+        }
+        if($value['region'] == ""){
+
+            $value['region'] = null;
+        }
+
+
+
+        $qb = $this->createQueryBuilder('a')
+            ->join('a.category' , 'cat')
+            ->join('a.region' , 'reg')
+            ->select('a');
+
+        if ($value['category']){
+            $qb->andWhere('cat.id = :catName')
+                ->setParameter('catName' , $value['category'] );
+        }
+
+        if($value['region']){
+            $qb->andWhere('reg.id = :regName');
+            $qb->setParameter('regName' , $value['region'] );
+        }
+
+        if($value['search']){
+            $qb->andWhere('a.title LIKE :keyWord');
+            $qb->setParameter('keyWord' , '%'.$value['search'].'%' );
+
+        }
+
+        return  $qb->andWhere('a.isActive = true')->getQuery()->getResult();
+
+
     }
-    */
+
+// SELECT * From ads JOIN category as cat ON ads.category_id = cat.id WHERE cat.name = "Vente";
+//SELECT * From ads JOIN category as cat   ON ads.category_id = cat.id  JOIN region as reg ON ads.region_id = reg.id WHERE cat.name = "Vente";
+
 
     /*
     public function findOneBySomeField($value): ?Ads

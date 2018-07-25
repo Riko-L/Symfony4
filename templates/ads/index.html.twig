@@ -4,58 +4,76 @@
 
 {% block body %}
 
+
+
+    <nav class="navbar navbar-light bg-light">
+        <h1>Recherche</h1>
+        {{  form_start(formSearch  ,{ 'attr': {'class': 'form-inline'} , 'action': path('search'), 'method': 'POST'}) }}
+        {{ form_row(formSearch.search ,{'label' : "Mot clé" , 'attr': {'class': 'mr-4'}}) }}
+        {{ form_row(formSearch.region ,{'attr': {'class': 'mr-4'}}) }}
+        {{ form_row(formSearch.category ,{'attr': {'class': 'mr-4'}}) }}
+        <button class="btn btn-primary">{{ button_label|default('Rechercher') }}</button>
+
+        {{  form_end(formSearch) }}
+
+    </nav>
+
     <div class="container">
 
 
-        <h1>Les annonces</h1>
 
-        <h2>Tableau des annonces</h2>
+        <div class="row">
+            <div class="col">
+                <h1>Les annonces</h1>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <td>Image</td>
-                <td>Titre</td>
-                <td>Date</td>
-                <td>Nom d'utilisateur</td>
-                <td>Région</td>
-                <td>Catégorie</td>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <td>Masquer</td>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for ad in ads %}
-                {% if is_granted('ROLE_ADMIN') or (ad.isActive and is_granted('ROLE_USER')) or (ad.isActive and is_granted('IS_AUTHENTICATED_ANONYMOUSLY'))%}
-                <tr class='clickable-row' data-href="{{ path('ads_show' , { 'ad' : ad.id}) }}">
-                    <td><img class="img-fluid img-thumbnail" width="200" src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
-                    <td>{{ ad.title }}</td>
-                    <td>{{ ad.creationDate|date("d/m/Y")  }}</td>
-                    <td>{{ ad.author.username }}</td>
-                    <td>{{ ad.region.name }}</td>
-                    <td>{{ ad.category.name}}</td>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        {% if ad.isActive == true %}
-                            <td><a href="{{ path('ads_moderate' , {'ad' : ad.id}) }}" class="btn btn-warning">Masquer Annonce</a></td>
-                        {% else %}
-                            <td><a href="{{ path('ads_moderate' , {'ad' : ad.id}) }}" class="btn btn-primary">Afficher Annonce</a></td>
-                        {% endif %}
-                    {% endif %}
-                </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-            {% if is_granted('ROLE_ADMIN') %}
-                <tfooter>
+                <h2>Tableau des annonces</h2>
+
+                <table class="table">
+                    <thead>
                     <tr>
-                        <td>Modération</td>
-                        <td>Nombre d'annonces masquées : {{ inactiveAds | length  }}</td>
+                        <td>Image</td>
+                        <td>Titre</td>
+                        <td>Date</td>
+                        <td>Nom d'utilisateur</td>
+                        <td>Région</td>
+                        <td>Catégorie</td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>Masquer</td>
+                        {% endif %}
                     </tr>
-                </tfooter>
+                    </thead>
+                    <tbody>
+                    {% for ad in ads %}
+                        {% if is_granted('ROLE_ADMIN') or (ad.isActive and is_granted('ROLE_USER')) or (ad.isActive and is_granted('IS_AUTHENTICATED_ANONYMOUSLY'))%}
+                            <tr class='clickable-row' data-href="{{ path('ads_show' , { 'ad' : ad.id}) }}">
+                                <td><img class="img-fluid img-thumbnail" width="200" src="{{ path('photo_show_one' , { 'ad' : ad.id })}}" alt="img_annonce"></td>
+                                <td>{{ ad.title }}</td>
+                                <td>{{ ad.creationDate|date("d/m/Y")  }}</td>
+                                <td>{{ ad.author.username }}</td>
+                                <td>{{ ad.region.name }}</td>
+                                <td>{{ ad.category.name}}</td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    {% if ad.isActive == true %}
+                                        <td><a href="{{ path('ads_moderate' , {'ad' : ad.id}) }}" class="btn btn-warning">Masquer Annonce</a></td>
+                                    {% else %}
+                                        <td><a href="{{ path('ads_moderate' , {'ad' : ad.id}) }}" class="btn btn-primary">Afficher Annonce</a></td>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <tfooter>
+                            <tr>
+                                <td>Modération</td>
+                                <td>Nombre d'annonces masquées : {{ inactiveAds | length  }}</td>
+                            </tr>
+                        </tfooter>
 
-            {% endif %}
-        </table>
-
+                    {% endif %}
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}

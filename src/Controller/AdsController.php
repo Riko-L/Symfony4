@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ads;
 use App\Form\AdsType;
+use App\Form\SearchType;
 use App\Repository\AdsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,11 @@ class AdsController extends Controller
         $person = $this->getUser();
         $ads = $adsRepository->findAll();
 
+
+        $formSearch = $this->createForm(SearchType::class);
+
+
+
         $inactiveAds = array_filter(
             array_map(function(Ads $ad) {
                 return !$ad->getIsActive();
@@ -38,7 +44,8 @@ class AdsController extends Controller
         return $this->render('ads/index.html.twig', [
             'ads' => $ads,
             'person' => $person,
-            'inactiveAds' => $inactiveAds
+            'inactiveAds' => $inactiveAds,
+            'formSearch' => $formSearch->createView(),
         ]);
     }
 
