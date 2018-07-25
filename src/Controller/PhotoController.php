@@ -26,16 +26,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class PhotoController extends Controller
 {
-    /**
-     * @Route("", name="photo")
-     */
-    public function index()
-    {
-        return $this->render('photo/index.html.twig', [
-            'controller_name' => 'PhotoController',
-        ]);
-    }
-
 
 
     /**
