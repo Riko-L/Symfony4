@@ -36,18 +36,25 @@ security:
                     invalidate_session: true
             # https://symfony.com/doc/current/security/form_login_setup.html
 
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
+
+
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/account, roles: [ROLE_USER , ROLE_ADMIN] }
+        - { path: ^/account, roles: [ROLE_USER] }
         - { path: ^/photo/showall, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: ^/photo/showone, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
 
         - { path: ^/ads/show, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: ^/ads$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
 
-        - { path: ^/photo, roles: [ROLE_USER , ROLE_ADMIN ] }
-        - { path: ^/ads, roles: [ROLE_USER , ROLE_ADMIN ] }
+        - { path: ^/photo, roles: [ROLE_USER ] }
+        - { path: ^/ads, roles: [ROLE_USER] }
 
 
 
