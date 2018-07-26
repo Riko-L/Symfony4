@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,6 +21,7 @@ class Person implements UserInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"default"})
      */
     private $id;
 
@@ -33,6 +35,7 @@ class Person implements UserInterface
     /**
      * @ORM\Column(type="string", length=191 , unique=true)
      * @Assert\NotBlank(groups={"update"})
+     * @Groups({"default"})
      */
     private $username;
 

@@ -40,6 +40,7 @@ class AdsRepository extends ServiceEntityRepository
 
 
 
+
         $qb = $this->createQueryBuilder('a')
             ->join('a.category' , 'cat')
             ->join('a.region' , 'reg')

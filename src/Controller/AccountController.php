@@ -44,6 +44,7 @@ class AccountController extends Controller
 
 
     /**
+     *
      * @Route("/edit", name="account_edit", methods="GET|POST")
      */
     public function edit(Request $request): Response

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdsRepository")
@@ -15,27 +16,32 @@ class Ads
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"default"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Groups({"default"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=65536)
+     * @Groups({"default"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"default"})
      */
     private $creationDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="ads")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"default"})
      */
     private $author;
 
@@ -49,11 +55,13 @@ class Ads
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="category")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"default"})
      */
     private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="ads")
+     * @Groups({"default"})
      */
     private $region;
 
