@@ -30,3 +30,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+
+    app.security.adsvoter.edit_ads:
+        class: App\Security\AdsVoter
+        tags:
+            - { name: security.voter }

@@ -10,16 +10,28 @@ namespace App\Security;
 
 
 
+use App\Entity\Ads;
 use App\Entity\Person;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class AccountVoter extends Voter
+class AdsVoter extends Voter
 {
 
 
-    const VIEW = 'view';
+
     const EDIT = 'edit';
+    private $decisionManager;
+
+
+
+
+    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->decisionManager = $decisionManager;
+    }
+
 
     /**
      * Determines if the attribute and subject are supported by this voter.
@@ -31,7 +43,17 @@ class AccountVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        // TODO: Implement supports() method.
+        if (!$attribute === self::EDIT) {
+            return false;
+        }
+
+
+        if (!$subject instanceof Ads) {
+            return false;
+        }
+
+
+        return true;
     }
 
     /**
@@ -48,42 +70,13 @@ class AccountVoter extends Voter
     {
         $user = $token->getUser();
 
+
         if (!$user instanceof Person) {
-            // the user must be logged in; if not, deny access
             return false;
         }
 
-        $account = $subject;
-
-
-        switch ($attribute) {
-            case self::VIEW:
-                return $this->canView($account, $user);
-            case self::EDIT:
-                return $this->canEdit($account, $user);
-        }
-
-        throw new \LogicException('This code should not be reached!');
+        return $subject->getAuthor() === $token->getUser() ||
+            $this->decisionManager->decide($token, array('ROLE_MODERATOR'));
 
     }
-
-    private function canView(Person $account, Person $user)
-    {
-        // if they can edit, they can view
-        if ($this->canEdit($account, $user)) {
-            return true;
-        }
-
-        // the Post object could have, for example, a method isPrivate()
-        // that checks a boolean $private property
-        return !$post->isPrivate();
-    }
-
-    private function canEdit(Post $account, User $user)
-    {
-        // this assumes that the data object has a getOwner() method
-        // to get the entity of the user who owns this data object
-        return $user === $account->getOwner();
-    }
-
 }

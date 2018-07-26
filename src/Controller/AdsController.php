@@ -114,6 +114,9 @@ class AdsController extends Controller
      */
     public function edit(Request $request, Ads $ads): Response
     {
+
+        $this->denyAccessUnlessGranted('edit' , $ads);
+
         $person = $this->getUser();
 
         $photos = $ads->getPhotos();
