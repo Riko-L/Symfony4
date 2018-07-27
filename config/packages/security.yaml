@@ -6,6 +6,7 @@ security:
         our_db_provider:
             entity:
                 class: App\Entity\Person
+                property: apiKey
 
     encoders:
             App\Entity\Person: bcrypt
@@ -35,6 +36,12 @@ security:
                     target: /
                     invalidate_session: true
             # https://symfony.com/doc/current/security/form_login_setup.html
+
+
+            guard:
+                authenticators:
+                    - App\Security\TokenAuthenticator
+
 
 
     role_hierarchy:

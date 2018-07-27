@@ -999,21 +999,21 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="252" parent="241" name="category">
+    <column id="252" parent="241" name="category_id">
       <Position>6</Position>
-      <DataType>varchar(150)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="241" name="category_id">
+    <column id="253" parent="241" name="region_id">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="241" name="region_id">
+    <column id="254" parent="241" name="is_active">
       <Position>8</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>tinyint(1)|0s</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="255" parent="241" name="IDX_7EC9F620F675F31B">
@@ -1136,88 +1136,102 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="276" parent="244" name="UNIQ_34DCD176E7927C74">
+    <column id="276" parent="244" name="api_key">
+      <Position>10</Position>
+      <DataType>varchar(150)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="277" parent="244" name="UNIQ_34DCD176E7927C74">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="277" parent="244" name="UNIQ_34DCD176F85E0677">
+    <index id="278" parent="244" name="UNIQ_34DCD176F85E0677">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="278" parent="244" name="PRIMARY">
+    <index id="279" parent="244" name="person_api_key_uindex">
+      <ColNames>api_key</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="280" parent="244" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="279" parent="244" name="UNIQ_34DCD176E7927C74">
+    <key id="281" parent="244" name="UNIQ_34DCD176E7927C74">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>UNIQ_34DCD176E7927C74</UnderlyingIndexName>
     </key>
-    <key id="280" parent="244" name="UNIQ_34DCD176F85E0677">
+    <key id="282" parent="244" name="UNIQ_34DCD176F85E0677">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>UNIQ_34DCD176F85E0677</UnderlyingIndexName>
     </key>
-    <column id="281" parent="245" name="id">
+    <key id="283" parent="244" name="person_api_key_uindex">
+      <ColNames>api_key</ColNames>
+      <UnderlyingIndexName>person_api_key_uindex</UnderlyingIndexName>
+    </key>
+    <column id="284" parent="245" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="282" parent="245" name="ads_id">
+    <column id="285" parent="245" name="ads_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="283" parent="245" name="name">
+    <column id="286" parent="245" name="name">
       <Position>3</Position>
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="284" parent="245" name="description">
+    <column id="287" parent="245" name="description">
       <Position>4</Position>
       <DataType>varchar(150)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="285" parent="245" name="file">
+    <column id="288" parent="245" name="file">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="286" parent="245" name="IDX_14B78418FE52BF81">
+    <index id="289" parent="245" name="IDX_14B78418FE52BF81">
       <ColNames>ads_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="287" parent="245" name="PRIMARY">
+    <key id="290" parent="245" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="288" parent="245" name="FK_14B78418FE52BF81">
+    <foreign-key id="291" parent="245" name="FK_14B78418FE52BF81">
       <ColNames>ads_id</ColNames>
       <RefSchemaName>db_symfony</RefSchemaName>
       <RefTableName>ads</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="289" parent="246" name="id">
+    <column id="292" parent="246" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="246" name="name">
+    <column id="293" parent="246" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="291" parent="246" name="PRIMARY">
+    <key id="294" parent="246" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

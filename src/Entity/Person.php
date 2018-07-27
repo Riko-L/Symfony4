@@ -89,6 +89,11 @@ class Person implements UserInterface
      */
     private $ads;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $apiKey;
+
 
     public function __construct()
     {
@@ -258,6 +263,18 @@ class Person implements UserInterface
                 $ad->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->apiKey;
+    }
+
+    public function setApiKey(?string $apiKey): self
+    {
+        $this->apiKey = $apiKey;
 
         return $this;
     }
